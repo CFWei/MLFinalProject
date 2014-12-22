@@ -25,30 +25,34 @@ def DJI(date):
     return parseStock(date,"DJI",4)
 
 def MACD(date,stocknum):
-    optInFastPeriod = 28
-    optInSlowPeriod = 12
-    optInSignalPeriod = 9
-    DataCount= optInFastPeriod + optInSignalPeriod - 1
-    searchDateTime = datetime.datetime.strptime(date,"%Y/%m/%d")
-    #Record How many days are used
-    dateCount=0
-    #Record How many data are ured
-    count = 0
-    closePrice = []
-    while(1):
-        tmpDate = searchDateTime - datetime.timedelta(days=dateCount)
-        tmpClosePrice = ClosePrice(tmpDate.strftime("%Y/%m/%d"),stocknum)
-        if tmpClosePrice != 0:
-            count = count + 1
-            closePrice.append(float(tmpClosePrice))
-        dateCount = dateCount +1
-        if count >= DataCount:
-            break
-    closePrice.reverse()
-    outMACD ,outMACDSignal ,outMACDHist=talib.MACD(array(closePrice),optInFastPeriod,optInSlowPeriod,optInSignalPeriod)
-    print(outMACD[len(outMACD)-1])
-    return 0
+    try:
+        optInFastPeriod = 28
+        optInSlowPeriod = 12
+        optInSignalPeriod = 9
+        DataCount= optInFastPeriod + optInSignalPeriod - 1
+        searchDateTime = datetime.datetime.strptime(date,"%Y/%m/%d")
+        #Record How many days are used
+        dateCount=0
+        #Record How many data are ured
+        count = 0
+        closePrice = []
+        while(1):
+            tmpDate = searchDateTime - datetime.timedelta(days=dateCount)
+            tmpClosePrice = ClosePrice(tmpDate.strftime("%Y/%m/%d"),stocknum)
+            if tmpClosePrice != 0:
+                count = count + 1
+                closePrice.append(float(tmpClosePrice))
+            dateCount = dateCount +1
+            if count >= DataCount:
+                break
+        closePrice.reverse()
+        outMACD ,outMACDSignal ,outMACDHist=talib.MACD(array(closePrice),optInFastPeriod,optInSlowPeriod,optInSignalPeriod)
+        return outMACD[len(outMACD)-1]
+    except:
+        return 0
 
+def BankInteerst(date,stocknum):
+    searchDateTime = datetime.datetime.strptime(date,"%Y/%m/%d")
 
 MACD('2014/12/01',3705)
 
