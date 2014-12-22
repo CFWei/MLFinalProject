@@ -2,9 +2,11 @@ __author__ = 'CFWei'
 import talib
 import time
 import datetime
+import csv
 from numpy import *
+from GetStock import getStock,parseStock,getDJI,getsp500energy
 
-from GetStock import getStock,parseStock,getDJI
+filePath="stock/"
 
 def OpenPrice(date,stockNum):
     return parseStock(date,stockNum,1)
@@ -51,10 +53,40 @@ def MACD(date,stocknum):
     except:
         return 0
 
-def BankInteerst(date,stocknum):
-    searchDateTime = datetime.datetime.strptime(date,"%Y/%m/%d")
+def BankInterest(date,stockNum):
+    try:
+        searchDateTime = datetime.datetime.strptime(date,"%Y/%m/%d")
+        #轉成民國
+        year = str((int(searchDateTime.strftime('%Y'))-1911))
+        month = searchDateTime.strftime('%m')
+        tmpDate = year + "/" + month
+        with open(filePath+"bank_interest.csv") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                if row[0] == tmpDate:
+                    print(row[1])
+                    return row[1]
+        return 0
+    except:
+        return 0
 
-MACD('2014/12/01',3705)
+def WorkingPeoplePercentage(date,stockNum):
+    try:
+        searchDateTime = datetime.datetime.strptime(date,"%Y/%m/%d")
+        #轉成民國
+        year = str((int(searchDateTime.strftime('%Y'))-1911))
+        month = searchDateTime.strftime('%m')
+        tmpDate = year + "/" + month
+        with open(filePath+"WorkingPeoplePercentage.csv") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                if row[0] == tmpDate:
+                    return row[1]
+        return 0
+    except:
+        return 0
+
+getsp500energy('2014/10/01')
 
 #outMACD ,outMACDSignal ,outMACDHist=talib.MACD(close,12,26,9)
 #print(outMACD)
