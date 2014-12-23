@@ -86,7 +86,13 @@ def WorkingPeoplePercentage(date,stockNum):
     except:
         return 0
 
-getsp500energy('2014/10/01')
+def SP500Energy(date,stockNum):
+    try:
+        return parseStock(date,"SPList",4)
+    except:
+        return 0
+
+print(SP500Energy('2014/10/01',3704))
 
 #outMACD ,outMACDSignal ,outMACDHist=talib.MACD(close,12,26,9)
 #print(outMACD)
