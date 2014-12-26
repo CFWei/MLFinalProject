@@ -1,10 +1,9 @@
 __author__ = 'CFWei'
 import talib
-import time
 import datetime
 import csv
 from numpy import *
-from GetStock import getStock,parseStock,getDJI,getsp500energy
+from GetStock import *
 
 filePath="stock/"
 
@@ -91,8 +90,6 @@ def SP500Energy(date,stockNum):
         return parseStock(date,"SPList",4)
     except:
         return 0
-
-print(SP500Energy('2014/10/01',3704))
 
 #outMACD ,outMACDSignal ,outMACDHist=talib.MACD(close,12,26,9)
 #print(outMACD)

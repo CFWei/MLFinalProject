@@ -44,34 +44,39 @@ def getDJI(date):
         startTime_m = "Jan"
         startTime_d = str(1)
 
-        url = "http://www.google.com/finance/historical?q=INDEXDJX%3A.DJI&ei=oWwmVKCtJYSTlAX03oGICg&&num=200&startdate=" + startTime_m + "+" + startTime_d + "+" + startTime_y + "&enddate=" + endTime_m + "+" + endTime_d + "+" + endTime_y
-
-        #Get Response From URL
-        response=urllib.request.urlopen(url)
-        #Get Byte Array From URL Content
-        html = response.read()
-        #Convert Byte Array to String
-        shtml = html.decode('utf-8')
-
-        #Create BeautifulSoup
-        soup = BeautifulSoup(shtml, 'lxml')
-
-        priceTable = soup.find_all(id='prices')
-
-        #Get DJI Title
-        DJITitle=[]
-        for title in priceTable[0].find_all('th' , class_ = 'bb'):
-            DJITitle.append(title.contents[0].strip('\n'))
-
-        #Get DJI List
+        searchDataCount=0
         DJIList = []
-        for child in priceTable[0].find_all('tr'):
-            temp = []
-            for child1 in child.find_all('td'):
-                temp.append(child1.contents[0].strip(',').strip('\n').replace(',', ''))
+        while(1):
+            url = "http://www.google.com/finance/historical?q=INDEXDJX%3A.DJI&ei=oWwmVKCtJYSTlAX03oGICg&&num="+str(searchDataCount+200)+"&start="+str(searchDataCount)+"&startdate=" + startTime_m + "+" + startTime_d + "+" + startTime_y + "&enddate=" + endTime_m + "+" + endTime_d + "+" + endTime_y
+            searchDataCount = searchDataCount+200
+            print(url)
+            #Get Response From URL
+            response=urllib.request.urlopen(url)
+            #Get Byte Array From URL Content
+            html = response.read()
+            #Convert Byte Array to String
+            shtml = html.decode('utf-8')
 
-            if temp != []:
-                DJIList.append(temp)
+            #Create BeautifulSoup
+            soup = BeautifulSoup(shtml, 'lxml')
+
+            priceTable = soup.find_all(id='prices')
+            if len(priceTable) !=0:
+                #Get DJI Title
+                DJITitle=[]
+                for title in priceTable[0].find_all('th' , class_ = 'bb'):
+                    DJITitle.append(title.contents[0].strip('\n'))
+
+                #Get DJI List
+                for child in priceTable[0].find_all('tr'):
+                    temp = []
+                    for child1 in child.find_all('td'):
+                        temp.append(child1.contents[0].strip(',').strip('\n').replace(',', ''))
+
+                    if temp != []:
+                        DJIList.append(temp)
+            else:
+                break
         #Save to file
         file = open(filePath+'DJI', 'w', encoding='utf-8')
         flag = 0
@@ -114,32 +119,36 @@ def getsp500energy(date):
         startTime_y = str(2010)
         startTime_m = "Jan"
         startTime_d = str(1)
-
-        url = "https://www.google.com/finance/historical?q=INDEXSP%3ASP500-10&num=200&startdate=" + startTime_m + "+" + startTime_d + "+" + startTime_y + "&enddate=" + endTime_m + "+" + endTime_d + "+" + endTime_y
-        #Get Response From URL
-        response=urllib.request.urlopen(url)
-        #Get Byte Array From URL Content
-        html = response.read()
-        #Convert Byte Array to String
-        shtml = html.decode('utf-8')
-
-        #Create BeautifulSoup
-        soup = BeautifulSoup(shtml, 'lxml')
-        priceTable = soup.find_all(id='prices')
-        #Get DJI Title
-        SPTitle=[]
-        for title in priceTable[0].find_all('th' , class_ = 'bb'):
-            SPTitle.append(title.contents[0].strip('\n'))
-
-        #Get DJI List
         SPList = []
-        for child in priceTable[0].find_all('tr'):
-            temp = []
-            for child1 in child.find_all('td'):
-                temp.append(child1.contents[0].strip(',').strip('\n').replace(',', ''))
+        searchDataCount = 0
+        while(1):
+            url = "https://www.google.com/finance/historical?q=INDEXSP%3ASP500-10&num="+str(searchDataCount+200)+"&start="+str(searchDataCount)+"&startdate=" + startTime_m + "+" + startTime_d + "+" + startTime_y + "&enddate=" + endTime_m + "+" + endTime_d + "+" + endTime_y
+            searchDataCount = searchDataCount + 200
+            #Get Response From URL
+            response=urllib.request.urlopen(url)
+            #Get Byte Array From URL Content
+            html = response.read()
+            #Convert Byte Array to String
+            shtml = html.decode('utf-8')
 
-            if temp != []:
-                SPList.append(temp)
+            #Create BeautifulSoup
+            soup = BeautifulSoup(shtml, 'lxml')
+            priceTable = soup.find_all(id='prices')
+            if len(priceTable) ==0:
+                break
+            #Get SP Title
+            SPTitle=[]
+            for title in priceTable[0].find_all('th' , class_ = 'bb'):
+                SPTitle.append(title.contents[0].strip('\n'))
+
+            #Get SP List
+            for child in priceTable[0].find_all('tr'):
+                temp = []
+                for child1 in child.find_all('td'):
+                    temp.append(child1.contents[0].strip(',').strip('\n').replace(',', ''))
+
+                if temp != []:
+                    SPList.append(temp)
         #Save to file
         file = open(filePath+'SPList', 'w', encoding='utf-8')
         flag = 0
@@ -169,7 +178,7 @@ def getsp500energy(date):
             file.write('\n')
         file.close()
 
-        print(url)
+        
     except:
         return 0
 
