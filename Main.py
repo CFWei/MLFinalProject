@@ -25,7 +25,7 @@ if isGetsp500energy == 1:
 
 
 f=open('ParseStockList','r')
-with open('names.csv', 'w', newline='') as csvfile:
+with open('Feature.csv', 'w', newline='') as csvfile:
     #定義Field Title
     fieldnames = ['date','OpenPrice','HighPrice','LowPrice','ClosePrice','Volume','DJI','MACD','BankInterest','WorkingPeoplePercentage','SP500Energy']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
