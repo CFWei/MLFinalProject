@@ -50,6 +50,7 @@ def MACD(date,stocknum):
         outMACD ,outMACDSignal ,outMACDHist=talib.MACD(array(closePrice),optInFastPeriod,optInSlowPeriod,optInSignalPeriod)
         return outMACD[len(outMACD)-1]
     except:
+        print("MACD Error:"+date+" "+str(stocknum))
         return 0
 
 def BankInterest(date,stockNum):
@@ -63,10 +64,10 @@ def BankInterest(date,stockNum):
             reader = csv.reader(f)
             for row in reader:
                 if row[0] == tmpDate:
-                    print(row[1])
                     return row[1]
         return 0
     except:
+        print("BankInterest Error:"+date+" "+str(stockNum))
         return 0
 
 def WorkingPeoplePercentage(date,stockNum):
@@ -83,12 +84,14 @@ def WorkingPeoplePercentage(date,stockNum):
                     return row[1]
         return 0
     except:
+        print("WorkingPeoplePercentage Error:"+date+" "+str(stockNum))
         return 0
 
 def SP500Energy(date,stockNum):
     try:
         return parseStock(date,"SPList",4)
     except:
+        print("SP500Energy Error:"+date+" "+str(stockNum))
         return 0
 #print(BankInterest('2014/08/28','3704'))
 
