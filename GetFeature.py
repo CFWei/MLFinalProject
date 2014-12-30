@@ -1,10 +1,10 @@
 __author__ = 'CFWei'
 import talib
-import datetime
+
 import csv
 from numpy import *
 from GetStock import *
-
+import datetime
 filePath="stock/"
 
 def OpenPrice(date,stockNum):
@@ -22,7 +22,7 @@ def ClosePrice(date,stockNum):
 def Volume(date,stockNum):
     return parseStock(date,stockNum,5)
 
-def DJI(date):
+def DJI(date,stockNum):
     return parseStock(date,"DJI",4)
 
 def MACD(date,stocknum):
@@ -90,6 +90,7 @@ def SP500Energy(date,stockNum):
         return parseStock(date,"SPList",4)
     except:
         return 0
+#print(BankInterest('2014/08/28','3704'))
 
 #outMACD ,outMACDSignal ,outMACDHist=talib.MACD(close,12,26,9)
 #print(outMACD)
