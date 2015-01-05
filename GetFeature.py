@@ -25,32 +25,18 @@ def Volume(date,stockNum):
 def DJI(date,stockNum):
     return parseStock(date,"DJI",4)
 
-def MACD(date,stocknum):
+def MACD(date,stockNum):
     try:
         optInFastPeriod = 28
         optInSlowPeriod = 12
         optInSignalPeriod = 9
-        DataCount= optInFastPeriod + optInSignalPeriod - 1
-        searchDateTime = datetime.datetime.strptime(date,"%Y/%m/%d")
-        #Record How many days are used
-        dateCount=0
-        #Record How many data are ured
-        count = 0
-        closePrice = []
-        while(1):
-            tmpDate = searchDateTime - datetime.timedelta(days=dateCount)
-            tmpClosePrice = ClosePrice(tmpDate.strftime("%Y/%m/%d"),stocknum)
-            if tmpClosePrice != 0:
-                count = count + 1
-                closePrice.append(float(tmpClosePrice))
-            dateCount = dateCount +1
-            if count >= DataCount:
-                break
-        closePrice.reverse()
-        outMACD ,outMACDSignal ,outMACDHist=talib.MACD(array(closePrice),optInFastPeriod,optInSlowPeriod,optInSignalPeriod)
+        optTimeperiod= optInFastPeriod + optInSignalPeriod - 1
+
+        stockInfo = getStockInfo(date, stockNum, optTimeperiod)
+
+        outMACD ,outMACDSignal ,outMACDHist=talib.MACD(stockInfo['close'],optInFastPeriod,optInSlowPeriod,optInSignalPeriod)
         return outMACD[len(outMACD)-1]
     except:
-        print("MACD Error:"+date+" "+str(stocknum))
         return 0
 
 def BankInterest(date,stockNum):
